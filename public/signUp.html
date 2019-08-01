@@ -1,0 +1,36 @@
+<!doctype html>
+<html ng-app="signUp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <script src="js/angular.min.js"></script>
+    <script src="js/signUp.js"></script>
+    <link href="index.css" rel="stylesheet" type="text/css" media="all">
+</head>
+<body ng-controller="signUpController">
+    <div class="container">
+        <div class="card card-container">
+            <img id="profile-img" class="profile-img-card" src="image/avatar2.png" />
+            <p id="profile-name" class="profile-name-card"></p>
+            <form class="form-signin">
+                <span id="reauth-email" class="reauth-email"></span>
+                <center><label ng-bind="error" style="color:red"></label></center>
+                <p>
+                    <h3>Please select your role:</h3>
+                    <input type="radio" name="role" value="teacher" ng-model="formData.role" checked>A teacher
+                    <input type="radio" name="role" value="student" ng-model="formData.role">A student
+                </p>
+                <input type="text" id="inputFirstname" class="form-control" placeholder="First Name" ng-model="formData.firstName" required >
+                <input type="text" id="inputLastname" class="form-control" placeholder="Last Name" ng-model="formData.lastName" required >
+                <input type="text" id="inputUsername" class="form-control" placeholder="Username" ng-model="formData.user" required >
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" ng-model="formData.pass" required>
+                
+              </br>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" ng-click="checkSignUp()" >Sign up</button>
+            </form>
+            
+        </div>
+    </div>
+</body>
+</html>
+    

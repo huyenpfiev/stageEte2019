@@ -1,0 +1,36 @@
+<!doctype html>
+<html ng-app="login">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <script src="js/angular.min.js"></script>
+    <script src="js/login.js"></script>
+    <link href="index.css" rel="stylesheet" type="text/css" media="all">
+</head>
+
+<body ng-controller="loginController">
+
+    <div class="container">
+        <div class="card card-container">
+            <img id="profile-img" class="profile-img-card" src="image/avatar2.png" />
+            <p id="profile-name" class="profile-name-card"></p>
+            <form class="form-signin">
+                <span id="reauth-email" class="reauth-email"></span>
+                <center><label ng-bind="error" style="color:red"></label></center>
+                <input type="text" id="inputUsername" class="form-control" placeholder="Username" ng-model="formData.user" required autofocus>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" ng-model="formData.pass" required>
+                <div id="remember" class="checkbox">
+                    <label>
+                        <input type="checkbox" value="remember-me"> Remember me
+                    </label>
+                </div>
+              </br>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" ng-click="checkLogin()">Sign in</button>
+            </form>
+            <a href="#" class="forgot-password">
+                Forgot the password?
+            </a>
+        </div>
+    </div>
+</body>
+</html>

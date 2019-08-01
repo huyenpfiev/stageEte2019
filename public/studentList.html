@@ -1,0 +1,276 @@
+<!doctype html>
+<html ng-app="todolist">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Student list</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
+   
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> 
+    <script src="js/studentList.js"></script>
+    <style>
+    
+      .navbar {
+        margin-bottom: 0;
+        border-radius: 0;
+      }
+      
+      .footer {
+	  position: fixed;
+	  width: 100%;
+	  height:30px;
+	  left: 0;
+  	  bottom: 0;
+	  background-color: black;
+	  color: white;
+	  text-align: center;
+  	}
+      .card {
+      background-color: rgb(250, 250, 250);
+      width:80%;
+      /* just in case there no content*/
+      padding: 20px 25px 30px;
+      margin: 0 auto 25px;
+      margin-top: 20px;
+      /* shadows and rounded borders */
+      -moz-border-radius: 2px;
+      -webkit-border-radius: 2px;
+      border-radius: 1px;
+      -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+      -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+      box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+      }
+      .table tr:hover td {
+      background-color: #a5f7fa;
+      }
+    </style>
+</head>
+<body ng-controller="studentController">
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>                        
+            </button>
+            <a class="navbar-brand" href="/">ToDoList</a>
+          </div>
+          <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+              <li><a href="#">Home</a></li>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Projects</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="active">             	
+              		<a href="#"><span class="glyphicon glyphicon-user"></span> Hi {{teacherName}}!</a>              	
+              </li>
+              <li><a href="index.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="container-fluid">   
+        <div class="card">
+            <form>
+                <div class="row">
+                        <div class="col-lg-12">
+                            <div class="input-group  text-center">
+                                <input type="text" class="form-control" placeholder="Student name" ng-model="formData.name" required>
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-info" ng-click="search(formData)" ng-disabled="!formData.name">Search</button>
+                                </span>
+                            </div>
+
+                        </div>
+                </div>
+          </form>  
+        </div> 
+        
+        <div class="card" >
+            
+            <div class="card-body" ng-hide="clickedRow">
+
+              <h4><b>Total of {{students.length}} students: </b></h4>
+              <div id="table" class="table-editable">
+                <table class="table table-bordered table-responsive-md table-striped table-hover text-center">
+                  <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Student name</th>
+                    <th class="text-center">Birthdate</th>
+                    <th class="text-center">Details</th>
+                    <th class="text-center">Select</th>
+                  </tr>
+                  <tr class="bg-info" ng-repeat="x in students" >
+                        <td>
+                            <span>{{x._id}}</span>
+                        </td>
+                        <td>
+                                <span>{{x.firstName}}  {{x.lastName}}</span>
+                        </td>
+                       
+                        <td>
+                            <span contenteditable="false" >{{x.birthdate | date:'dd-MM-yyyy'}}</span> 
+                        </td>
+                        <td>
+                          <span><a ng-click="detail(x)">Click here</a></span>
+                        </td>
+                       
+                        <td>
+                            <span>
+                                <input type="checkbox" ng-model="x.done" ng-click="updateDone(x)" >
+                            </span>
+                        </td>
+                    
+                </tr>
+            </table>
+          </div>
+        </div>
+        
+        <div class="card-body" ng-show="clickedRow">
+    
+            <fieldset>
+              <table style="margin:10px auto" width="300">               
+                <center><h4><b>PERSONAL INFORMATION</b></h4> </center> 
+                <tr>
+                  <th>ID:</th>
+                  <td>{{info._id}}</td>
+                </tr>
+                <tr>
+                  <th>First name:</th>
+                  <td>{{info.firstName}}</td>
+                </tr>
+                <tr>
+                  <th>Last name:</th>
+                  <td>{{info.lastName}}</td>
+                </tr>
+                <tr>
+                  <th>Birthdate:</th>
+                  <td>{{info.birthdate | date:'dd-MM-yyyy'}}</td>
+                </tr>
+                
+              </table>
+            </fieldset>
+              <center>  
+                <button type="submit" class="btn btn-primary" ng-click="pressedBtt=true">Add a task</button>
+              </center> 
+              
+      <h5 class="font-weight-bold">Number of tasks: {{taskList.length}}</h5>
+    <div id="table" class="table-editable">
+      <table class="table table-bordered table-responsive-md table-striped text-center">
+        <tr>
+          <th class="text-center">Done</th>
+          <th class="text-center">Task</th>
+          <th class="text-center">Creation Date</th>
+          <th class="text-center">Edit</th>
+          <th class="text-center">Delete</th>
+        </tr>
+        <tr ng-repeat="x in taskList">
+          <td>
+              <span>
+                  <input type="checkbox" ng-model="x.done" ng-click="updateDone(x)" >
+              </span>
+          </td>
+          <td>
+            <span ng-show="x.done ==false"><a ng-href="{{x.name}}" target="_blank">{{x.name}}</a></span>
+            <span ng-show="x.done ==true"><strike><a ng-href="https://www.google.com/gmail/about/#" target="_blank">{{x.name}}</a></strike></span>
+            
+          </td>
+          <td>
+              <span contenteditable="false" >{{x.date | date:'dd-MM-yyyy'}}</span> 
+          </td>
+          <td>
+            <span >
+                  <button type="button" id="{{$index}}" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModal" ng-click="openModal($index)">
+                      <span class="glyphicon glyphicon-edit"></span>
+                  </button>
+            </span>
+          </td>
+          <td>
+            <span class="table-remove">
+              <button type="button" class="btn btn-danger btn-sm" ng-click="deleteTodo(x._id)">
+                  <span class="glyphicon glyphicon-trash"></span>
+              </button> 
+            </span>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    
+  </div>
+  
+  
+</div>
+   <!-- ===================================  -->
+  <div class="card" ng-show="pressedBtt">   
+      <div class="card-body">
+         <h4><b>Please choose one of the categories below:</b></h4>
+                <ul class="nav nav-pills" >
+                  <li class="active"><a class="list-group-item list-group-item-action"  data-toggle="pill" href="#list-music" >Listen to music</a></li>
+                  <li><a class="list-group-item list-group-item-action"  data-toggle="pill" href="#list-email" >Read emails</a></li>
+                  <li><a class="list-group-item list-group-item-action"  data-toggle="pill" href="#list-internet" >Browse Internet</a></li>
+                  <li><a class="list-group-item list-group-item-action"  data-toggle="pill" href="#list-game" >Play game</a></li>
+                </ul>
+      </div>
+      <div class="card-body">        
+              
+                <div class="tab-content" >
+                  <div class="tab-pane fade in active" id="list-music">
+                      <h4><b>Add a music URL link:</b></h4>
+                      <input type="text" class="form-control" ng-model="form.music" required autofocus><br>
+                      <center>
+                          <button type="submit" class="btn btn-secondary" ng-click="pressedBtt=false;form={}" >Cancel</button>
+                          <button type="submit" class="btn btn-success" ng-click="pressedBtt=false;addTask(1)" ng-disabled="!form.music">Submit</button>
+                      </center>                      
+                  </div>
+                  <div class="tab-pane fade" id="list-email" >
+                    <h4><b>Add a email account:</b></h4>
+                    <input type="email" class="form-control" ng-model="form.email" required autofocus><br>
+                      <center>
+                          <button type="submit" class="btn btn-secondary" ng-click="pressedBtt=false;form={}" >Cancel</button>
+                          <button type="submit" class="btn btn-success" ng-click="pressedBtt=false;addTask(2)" ng-disabled="!form.email">Submit</button>
+                      </center>
+                  </div>
+                  <div class="tab-pane fade" id="list-internet" >Search something</div>
+                  <div class="tab-pane fade" id="list-game" >Add the name of a game</div>
+                </div>
+              
+      </div>
+  </div> 
+  <!-- ===================================  -->   
+</div>
+<!-- =======Modal=========== -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    
+      <div class="modal-header">
+        <h3 class="modal-title" >Edit task
+        <button type="button" class="close" data-dismiss="modal" ng-click="closeModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </h3>	        
+      </div>
+      
+      <div class="modal-body">
+        <input class="form-control" id="editInput" type="text" ng-value="taskList[modalIndex].name" ng-model="newContent">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="closeModal()">Close</button>
+        <button type="button" class="btn btn-primary" ng-disabled="!newContent" ng-click="updateTodo(taskList[modalIndex])">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>   
+<!-- ============== -->
+<div class="footer">
+</div>  
+
+</body>
+
+</html>
