@@ -103,7 +103,9 @@
                     <th class="text-center">Student name</th>
                     <th class="text-center">Birthdate</th>
                     <th class="text-center">Details</th>
-                    <th class="text-center">Select</th>
+                    <th class="text-center">
+                        Select all <input type="checkbox" ng-model="all">
+                    </th>
                   </tr>
                   <tr class="bg-info" ng-repeat="x in students" >
                         <td>
@@ -122,13 +124,14 @@
                        
                         <td>
                             <span>
-                                <input type="checkbox" ng-model="x.done" ng-click="updateDone(x)" >
+                                <input type="checkbox" ng-model="x.checked" ng-checked="all">
                             </span>
                         </td>
                     
                 </tr>
             </table>
           </div>
+          <center><button type="submit" class="btn btn-primary" ng-click="check()" ng-disabled="pressedBtt==true">Add a task</button></center>
         </div>
         
         <div class="card-body" ng-show="clickedRow">
@@ -156,7 +159,7 @@
               </table>
             </fieldset>
               <center>  
-                <button type="submit" class="btn btn-primary" ng-click="pressedBtt=true">Add a task</button>
+                <button type="submit" class="btn btn-primary" ng-click="pressedBtt=true" ng-disabled="pressedBtt==true">Add a task</button>
               </center> 
               
       <h5 class="font-weight-bold">Number of tasks: {{taskList.length}}</h5>
@@ -176,8 +179,14 @@
               </span>
           </td>
           <td>
-            <span ng-show="x.done ==false"><a ng-href="{{x.name}}" target="_blank">{{x.name}}</a></span>
-            <span ng-show="x.done ==true"><strike><a ng-href="https://www.google.com/gmail/about/#" target="_blank">{{x.name}}</a></strike></span>
+            <span ng-show="x.category==1">Listen to music on </span>
+            <span ng-show="x.category==2">Read emails of </span>
+            <span ng-show="x.done ==false">
+              <a ng-href="{{x.name}}" target="_blank">{{x.name}}</a>
+            </span>
+            <span ng-show="x.done ==true">
+              <strike><a ng-href="https://www.google.com/gmail/about/#" target="_blank">{{x.name}}</a></strike>
+            </span>
             
           </td>
           <td>

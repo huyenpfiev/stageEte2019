@@ -123,8 +123,8 @@ var dataLayer={
         });
     },
     getStudentName:function(stID,cb){
-        db.collection("Students").find({_id:new ObjectID(stID)}).toArray(function(err,docs){
-            cb(docs);
+        db.collection("Students").find({_id:new ObjectID(stID)}).toArray(function(err,result){
+            cb(result);
         });
     },
     getGroupLists:function(userID,cb){

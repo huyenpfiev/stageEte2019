@@ -42,7 +42,21 @@ angular.module('todolist', []).controller('studentController', function ($scope,
             $scope.pressedBtt=false;
         });
     };
-  
+    $scope.check=function(){
+        var selectedSts=[];
+        if($scope.all==true) selectedSts=$scope.students;
+        else{
+            $scope.students.forEach(function(student){
+                if(student.checked==true){
+                    selectedSts.push(student);
+                }
+            });
+        }
+        if(selectedSts.length>0){
+            $scope.pressedBtt=true;
+        }
+        return selectedSts;
+    };
     $scope.addTask=function(number){
         if(number==1)
             content=$scope.form.music;
@@ -55,11 +69,26 @@ angular.module('todolist', []).controller('studentController', function ($scope,
             category:number,
             content:content
         }
-        $http.post('/addTask',data).then(function(res){
-            $scope.taskList=res.data;
-            $scope.form={};
         
-        });
+        if($scope.clickedRow==true){
+            $http.post('/addTask',data).then(function(res){
+                $scope.taskList=res.data;
+                $scope.form={};           
+            });
+        }
+        else{
+        var element={
+            data: data,
+            students: $scope.check()
+        } 
+            $http.post('/addForManySts',element).then(function(res){
+                $scope.pressedBtt=false;
+                $scope.form={};
+                
+            });
+            
+        }
+        
         
     }
     $scope.openModal=function(index){

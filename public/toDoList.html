@@ -93,14 +93,16 @@
         </tr>
         <tr class="bg-info" ng-repeat="x in taskSet" >
               <td>
-                  <span><a ng-href="{{x.name}}" target="_blank">{{x.name}}</a></span>
+                  <span ng-show="x.task.category==1">Listen to music on </span>
+                  <span ng-show="x.task.category==2">Read emails of </span>
+                  <span><a ng-href="{{x.task.name}}" target="_blank">{{x.task.name}}</a></span>
               </td>
               <td>
-                      <span>{{x.firstName}}  {{x.lastName}}</span>
+                      <span>{{x.teacher[0].firstName}} {{x.teacher[0].lastName}}</span>
               </td>
              
               <td>
-                  <span>{{x.date | date:'dd-MM-yyyy'}}</span> 
+                  <span>{{x.task.date | date:'dd-MM-yyyy'}}</span> 
               </td>
               <td>
                 <span>

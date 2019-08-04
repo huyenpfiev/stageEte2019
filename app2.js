@@ -133,6 +133,24 @@ app.post('/addTask',function(req,res){
         });
     }
 });
+//add a task for many students
+app.post('/addForManySts',function(req,res){
+    req.body.students.forEach(function(student){
+        var task={
+            teacher_id:new ObjectID(teacherID),
+            student_id:new ObjectID(student._id),
+            name:req.body.data.content,
+            done:false,
+            date:new Date(),
+            category:req.body.data.category
+        };      
+        dataLayer.insertTask(task,function(){
+
+        });
+    });
+    res.send("OK");
+          
+});
 //update task
 app.put("/updateTask",function(req,res){
     var id=req.body._id;
@@ -157,9 +175,22 @@ app.put("/updateTask",function(req,res){
 //send all tasks of  a student
 app.post("/getTaskSet",function(req,res){
     var stID=req.body._id;
-    
-    dataLayer.getTaskSet(stID,function(dtSet){
-        res.send(dtSet);
+    var docs= [];
+    var n=0;
+    dataLayer.getTaskSet(stID,function(tasks){
+        tasks.forEach(function(task){
+            var element={};
+            element.task=task;  
+            dataLayer.getTeacherName(task.teacher_id,function(teacher){
+                element.teacher=teacher; 
+                docs.push(element);   
+                n++;
+                if(n==tasks.length){
+                    res.send(docs);
+                }
+            });
+  
+        });
     });
 });
 
