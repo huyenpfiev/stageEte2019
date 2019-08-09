@@ -1,7 +1,7 @@
 
 var login = angular.module("login", []);
 login.controller("loginController", function($scope,$http) {
-    console.log($scope.formData);
+    
     $scope.checkLogin = function() {
         $http.post('/checkLogin', $scope.formData)
             .success(function(data) {
