@@ -147,7 +147,7 @@ var dataLayer={
     },
     importCSVFile:function(cb){
         let exec = require('child_process').exec;
-        let command= "mongoimport --uri \""+ uri +"\" --collection Muse2 --type csv --file museMonitor.csv --headerline";
+        let command= "mongoimport --uri \""+ uri +"\" --collection ExcelData --type csv --file museMonitor.csv --headerline";
         exec(command, (err, stdout, stderr) => {
             // check for errors or if it was succesfuly
             console.log(stdout);

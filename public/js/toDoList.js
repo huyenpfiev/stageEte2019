@@ -20,11 +20,7 @@ main.controller("mainController", function($scope,$http,$window) {
             $scope.studentName=res.data[0].lastName;  
         }); 
     });
-    $scope.import=function(){
-        $http.get('/importCSVFile').then(function(res){
-            console.log(res);
-        });
-    };
+    
     $scope.start=function(task){
         var IDs={
             id1: task._id,
@@ -44,6 +40,9 @@ main.controller("mainController", function($scope,$http,$window) {
         };
         $http.post('/saveFileName',$scope.file).then(function(res){
             console.log(res.data);
+            // $http.get('/importCSVFile').then(function(res){
+            //     console.log(res);
+            // });
         });
     };
     $scope.analyseBrain=function(){
