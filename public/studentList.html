@@ -82,7 +82,7 @@
                             <div class="input-group  text-center">
                                 <input type="text" class="form-control" placeholder="Student name" ng-model="formData.name" required>
                                 <span class="input-group-btn">
-                                    <button type="submit" class="btn btn-info" ng-click="search(formData)" ng-disabled="!formData.name">Search</button>
+                                    <button type="submit" class="btn btn-warning" ng-click="search(formData)" ng-disabled="!formData.name">Search</button>
                                 </span>
                             </div>
 
@@ -107,7 +107,7 @@
                         Select all <input type="checkbox" ng-model="all">
                     </th>
                   </tr>
-                  <tr class="bg-info" ng-repeat="x in students" >
+                  <tr class="bg-info" ng-repeat="x in students | orderBy : 'firstName'" >
                         <td>
                             <span>{{x._id}}</span>
                         </td>
@@ -169,17 +169,18 @@
         <tr>
           <th class="text-center">Done</th>
           <th class="text-center">Task</th>
+          <th class="text-center">Add comments</th>
           <th class="text-center">Creation Date</th>
           <th class="text-center">Edit</th>
           <th class="text-center">Delete</th>
         </tr>
-        <tr ng-repeat="x in taskList">
+        <tr ng-repeat="x in taskList | orderBy: 'date'">
           <td>
               <span>
-                  <input type="checkbox" ng-model="x.done" ng-click="updateDone(x)" >
+                  <input type="checkbox" ng-model="x.done" disabled>
               </span>
           </td>
-          <td>
+          <td >
             <span ng-show="x.category==1">Listen to music on </span>
             <span ng-show="x.category==2">Read emails of </span>
             <span ng-show="x.done ==false">
@@ -188,11 +189,19 @@
             <span ng-show="x.done ==true">
               <strike><a ng-href="https://www.google.com/gmail/about/#" target="_blank">{{x.name}}</a></strike>
             </span>
-            
+          </td>
+          <td>
+              <div class="input-group  text-center">
+                  <input type="text" class="form-control" placeholder="Comment" ng-model="cmt">
+                  <span class="input-group-btn">
+                      <button type="submit" class="btn btn-info" ng-click="comment(x._id,cmt);cmt=null" ng-disabled="!cmt">Add</button>
+                  </span>
+              </div>
           </td>
           <td>
               <span contenteditable="false" >{{x.date | date:'dd-MM-yyyy'}}</span> 
           </td>
+          
           <td>
             <span >
                   <button type="button" id="{{$index}}" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModal" ng-click="openModal($index)">
@@ -208,6 +217,7 @@
             </span>
           </td>
         </tr>
+
       </table>
     </div>
 

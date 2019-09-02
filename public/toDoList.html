@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Student list</title>
     <script src="library/angular.min.js"></script>
-   
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="library/jquery.min.js"></script>
     <script src="library/bootstrap.min.js"></script> 
     <script src="js/toDoList.js"></script>
+  
     <style>
     
       .navbar {
@@ -88,10 +88,11 @@
           <th class="text-center">Task</th>
           <th class="text-center">Teacher name</th>
           <th class="text-center">Delivery date</th>
-          <th class="text-center">Complete</th>
+          <th class="text-center">Comments</th>
+          <th class="text-center">Realize</th>
           
         </tr>
-        <tr class="bg-info" ng-repeat="x in taskSet" >
+        <tr class="bg-info" ng-repeat="x in taskSet | orderBy : 'task.date'" >
               <td>
                   <span ng-show="x.task.category==1">Listen to music on </span>
                   <span ng-show="x.task.category==2">Read emails of </span>
@@ -105,10 +106,22 @@
                   <span>{{x.task.date | date:'dd-MM-yyyy'}}</span> 
               </td>
               <td>
-                <span>
-                    <button type="submit" class="btn btn-success btn-sm" ng-click="start()">
+                  <span >
+                      <button type="button" id="{{$index}}" class="btn btn-secondary btn-sm"  data-toggle="modal" data-target="#exampleModal" ng-click="seeCmts(x.task,$index)">
+                          <span class="glyphicon glyphicon-eye-open"></span>
+                      </button>
+                </span>
+              </td>
+              <td>
+                <span ng-show="x.task.done==false">
+                    <button type="submit" class="btn btn-success btn-sm" ng-click="start(x.task)">
+                      <a ng-href="{{x.task.name}}" target="_blank">
                         Start
+                      </a>
                     </button>
+                </span>
+                <span ng-show="x.task.done==true">
+                  <button type="submit" class="btn btn-success btn-sm" disabled>Complete</button>
                 </span>
               </td>
         
@@ -118,8 +131,38 @@
 </div>
 </div>
 
+<div>
+  <center>
+      <input type=file id=fichier name=fichier/>
+      <button type="submit" ng-click="ajouter();imported=true">Import</button><br><br>
+      <button type="submit" class="btn btn-primary" ng-click="analyseBrain()" ng-disabled="imported==false">See your brain analysis</button>
+  </center>
 </div>
 
+</div>
+<!-- =======Modal=========== -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      
+        <div class="modal-header">
+          <h3 class="modal-title" >Comments
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </h3>	        
+        </div>
+        
+        <div class="modal-body" ng-repeat="x in commentList">
+          <input class="form-control" type="text" ng-value="x.content" disabled>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+        </div>
+      </div>
+    </div>
+  </div>   
+  <!-- ============== -->
   <div class="footer">
   </div>
 </body>

@@ -91,7 +91,9 @@ var dataLayer={
     deleteTask:function(id,cb){
         
         db.collection("Task").deleteOne({_id: new ObjectID(id)},function(err,result){
-            cb();
+            db.collection("Comments").deleteMany({taskID:new ObjectID(id)},function(){
+                cb();
+            });
             
         });
     },
@@ -127,32 +129,33 @@ var dataLayer={
             cb(result);
         });
     },
-    getGroupLists:function(userID,cb){
-        
-        db.collection("Lists").find({creator_id:new ObjectID(userID)}).toArray(function(err,docs){
-            cb(docs);
-        });
-    },
-    insertProject:function(project,cb){
-        db.collection("Lists").insertOne(project,function(err,result){
-            cb();
-        });
-    },
-    deleteProject:function(name,userID,cb){
-        
-        db.collection("Lists").deleteOne({creator_id: new ObjectID(userID),name_list:name},function(err,result){
-            db.collection("Task").deleteMany({user_id: new ObjectID(userID),list_name:name},function(err,result){
-                cb();
-            });
-            
-        });
-    },
- 
-    updateDone:function(id,done,cb){
-        db.collection("Task").updateOne({_id : new ObjectID(id)},{$set:{done:done}},function(err,result){
+    updateDone:function(id,cb){
+        db.collection("Task").updateOne({_id : new ObjectID(id)},{$set:{done:true}},function(err,result){
             cb();
         });
 
+    },
+    addComment:function(comment,cb){
+        db.collection("Comments").insertOne(comment,function(err,result){
+            cb(result);
+        });
+    },
+    getComments:function(id,cb){
+        db.collection("Comments").find({taskID:new ObjectID(id)}).toArray(function(err,result){
+            cb(result);
+        });
+    },
+    importCSVFile:function(cb){
+        let exec = require('child_process').exec;
+        let command= "mongoimport --uri \""+ uri +"\" --collection Muse2 --type csv --file museMonitor.csv --headerline";
+        exec(command, (err, stdout, stderr) => {
+            // check for errors or if it was succesfuly
+            console.log(stdout);
+            console.log(stderr);
+            cb(command);
+            if (err) throw err;         
+        });
     }
+    
 }
 module.exports=dataLayer;

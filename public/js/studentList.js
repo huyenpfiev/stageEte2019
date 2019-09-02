@@ -9,6 +9,7 @@ angular.module('todolist', []).controller('studentController', function ($scope,
     $scope.taskList={};
     $scope.modalIndex=null;
     $scope.newContent="";
+    
     $http.get('/getStudentList').then(function(res) {
             $scope.students = res.data;
             $http.post('/getTeacherName',userID).then(function(res){
@@ -112,6 +113,16 @@ angular.module('todolist', []).controller('studentController', function ($scope,
             $('#exampleModal').modal('hide');
 	        $scope.newContent="";
         });
+    };
+    //add a comment
+    $scope.comment=function(id,cmt){
+        var comment={
+            id: id,
+            content: cmt
+        }
+        $http.post('/addComment',comment).then(function(res){
+            console.log(res.data);
+        })
     };
     
     
