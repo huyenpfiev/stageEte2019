@@ -131,7 +131,7 @@
       "version": "1.8.1"
     },
     "express": "^4.17.1",
-    "fast-csv": "^3.4.0",
+    "fast-csv": "^4.3.6",
     "finalhandler": {
       "integrity": "sha512-Y1GUDo39ez4aHAw7MysnUD5JzYX+WaIj8I57kO3aEPT1fFRL4sr7mjei97FgnwhAyyzRYmQZaTHb2+9uZ1dPtg==",
       "requires": {
